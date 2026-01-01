@@ -1,6 +1,12 @@
 fun main() {
     while (true) {
-        val words = mutableListOf("apple", "banana", "orange")
+        val words = mutableListOf(
+            "apple", "banana", "orange",
+            "computer", "keyboard", "internet", "programming", "python",
+            "kotlin", "java", "algorithm", "function", "variable",
+            "mountain", "river", "forest", "ocean", "desert",
+            "puzzle", "mystery", "adventure", "challenge", "science"
+        )
         val guessedWord = words.random()
         val hidden = CharArray(guessedWord.length) { '_' }
         var lives = 5
