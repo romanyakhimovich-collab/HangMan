@@ -4,6 +4,7 @@ fun main() {
         val guessedWord = words.random()
         val hidden = CharArray(guessedWord.length) { '_' }
         var lives = 5
+        val usedLetters = mutableSetOf<Char>()
         while (lives > 0) {
             println("Word: ${hidden.joinToString(" ")}")
             println("Lives left: $lives")
@@ -12,7 +13,12 @@ fun main() {
             if (input.isEmpty()) {
                 continue
             }
-            val letter = input[0]
+            val letter = input.lowercase()[0]
+            if (letter in usedLetters) {
+                println("You've already used this letter!")
+                continue
+            }
+            usedLetters.add(letter)
             var found = false
             for (i in guessedWord.indices) {
                 if (letter == guessedWord[i]) {
