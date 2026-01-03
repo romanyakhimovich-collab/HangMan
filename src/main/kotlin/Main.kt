@@ -1,53 +1,53 @@
-fun main() {
-    while (true) {
-        val words = mutableListOf(
-            "apple", "banana", "orange",
-            "computer", "keyboard", "internet", "programming", "python",
-            "kotlin", "java", "algorithm", "function", "variable",
-            "mountain", "river", "forest", "ocean", "desert",
-            "puzzle", "mystery", "adventure", "challenge", "science"
-        )
-        val guessedWord = words.random()
-        val hidden = CharArray(guessedWord.length) { '_' }
-        var lives = 5
-        val usedLetters = mutableSetOf<Char>()
-        while (lives > 0) {
-            println("Word: ${hidden.joinToString(" ")}")
-            println("Lives left: $lives")
-            print("Enter your first letter: ")
-            val input = readln()
-            if (input.isEmpty()) {
-                continue
-            }
-            val letter = input.lowercase()[0]
-            if (letter in usedLetters) {
-                println("You've already used this letter!")
-                continue
-            }
-            usedLetters.add(letter)
-            var found = false
-            for (i in guessedWord.indices) {
-                if (letter == guessedWord[i]) {
-                    hidden[i] = letter
-                    found = true
+val words = mutableListOf(
+    "apple", "banana", "orange",
+    "computer", "keyboard", "internet", "programming", "python",
+    "kotlin", "java", "algorithm", "function", "variable",
+    "mountain", "river", "forest", "ocean", "desert",
+    "puzzle", "mystery", "adventure", "challenge", "science"
+)
+fun playRound() {
+    val targetWord = words.random()
+    val hiddenWord = CharArray(targetWord.length) { '_' }
+    val usedLetters = mutableSetOf<Char>()
+    var lives = 5
+
+    while (lives > 0) {
+        println("Word: ${hiddenWord.joinToString("")}")
+        println("Lives: $lives")
+        print("Guess a letter: ")
+        val input = readln()
+        val letter = input.lowercase().first()
+        if (letter in usedLetters) {
+            println("You've already guessed that letter!")
+            continue
+        }
+        usedLetters.add(letter)
+        if (letter in targetWord) {
+            for (i in targetWord.indices) {
+                if (targetWord[i] == letter) {
+                    hiddenWord[i] = letter
                 }
             }
-            if (!found) {
-                lives--
-                println("No such letter in the word!")
-            }
-            if ('_' !in hidden) {
-                println("You won! The word was $guessedWord")
-                break
-            }
+            println("Good guess!")
+        } else {
+            lives--
+            println("Wrong one!")
         }
-        if (lives == 0) {
-            println("You lost! The word was $guessedWord")
-            break
+        if ('_' !in hiddenWord) {
+            println("You won! The word was $targetWord")
+            return
         }
+    }
+    println("You lost! The word was $targetWord")
+}
+
+fun main() {
+    println("Welcome to HangMan Game!")
+    while (true) {
+        playRound()
+
         print("Play again? (y/n): ")
         if (readln() != "y") {
-            println("Thanks for playing!")
             break
         }
     }
